@@ -1,0 +1,22 @@
+prefix=us-z\$ii
+first=
+first_1=`expr $first - 1`
+last=
+last_1=`expr $last - 1`
+stride=
+
+for ii in 1
+do
+    filename=""
+    for ((nn=$first; nn <= $last; nn++)); do
+        if [ ! -f $prefix-$nn.dcd ]; then
+            echo "$prefix-$nn.dcd NOT found!"
+            exit 1
+        fi
+
+        filename="$filename $prefix-$nn.dcd"
+    done
+    catdcd -o $prefix-tmp.dcd -stride $stride $filename >> LOG_trim_$ii.log
+#    catdcd -o $prefix-$last-pf10ps.dcd $prefix-${first_1}-pf10ps.dcd $prefix-tmp.dcd >> LOG_trim_$ii.log
+    rm -fv $filename >> LOG_trim_$ii.log
+done
